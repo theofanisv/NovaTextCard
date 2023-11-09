@@ -16,8 +16,6 @@ class TextCard extends Card
         $this->withMeta([
             'center'         => true,
             'height'         => 'default',
-            'heading'        => false,
-            'text'           => false,
             'headingRaw'     => false,
             'textRaw'        => false,
             'forceFullWidth' => false,
@@ -30,6 +28,10 @@ class TextCard extends Card
      * @var string
      */
     public $width = '1/3';
+
+    public $heading = null;
+
+    public $text = null;
 
     /**
      * Get the component name for the element.
@@ -44,9 +46,7 @@ class TextCard extends Card
     /**
      * Set the text link
      *
-     * @param  array  $text
-     *
-     * @return array
+     * @return $this
      */
     public function center($boolean = true)
     {
@@ -56,21 +56,19 @@ class TextCard extends Card
     /**
      * Set the text link
      *
-     * @param  array  $text
-     *
-     * @return array
+     * @return $this
      */
     public function heading($text)
     {
-        return $this->withMeta(['heading' => $text]);
+        $this->heading = $text;
+
+        return $this;
     }
 
     /**
      * Set the height of card
      *
-     * @param  array  $text
-     *
-     * @return array
+     * @return $this
      */
     public function headingAsHtml()
     {
@@ -80,21 +78,19 @@ class TextCard extends Card
     /**
      * Set the text link
      *
-     * @param  array  $text
-     *
-     * @return array
+     * @return $this
      */
     public function text($text)
     {
-        return $this->withMeta(['text' => $text]);
+        $this->text = $text;
+
+        return $this;
     }
 
     /**
      * Set the height of card
      *
-     * @param  array  $text
-     *
-     * @return array
+     * @return $this
      */
     public function textAsHtml()
     {
@@ -104,9 +100,7 @@ class TextCard extends Card
     /**
      * Set the height of card
      *
-     * @param  array  $text
-     *
-     * @return array
+     * @return $this
      */
     public function height($height = 'auto')
     {
@@ -116,9 +110,7 @@ class TextCard extends Card
     /**
      * Set the height of card
      *
-     * @param  array  $text
-     *
-     * @return array
+     * @return $this
      */
     public function forceFullWidth()
     {
@@ -133,8 +125,10 @@ class TextCard extends Card
     public function jsonSerialize()
     {
         return array_merge([
-            'name'  => Str::random(16),
-            'width' => $this->width,
+            'name'    => Str::random(16),
+            'width'   => $this->width,
+            'heading' => value($this->heading, $this),
+            'text'    => value($this->text, $this),
         ], parent::jsonSerialize());
     }
 }
